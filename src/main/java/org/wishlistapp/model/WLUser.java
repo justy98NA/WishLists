@@ -10,7 +10,7 @@ import java.util.Set;
 public class WLUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userId;
+    private Long userId;
     @Column(unique = true)
     private String name;
     private String username;
@@ -50,7 +50,7 @@ public class WLUser {
         this.username = username;
     }
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 

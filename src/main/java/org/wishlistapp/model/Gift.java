@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Gift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     // Derived from comments, or URL
     private String title;
     // Only applicable if there is an url

@@ -9,7 +9,7 @@ import java.util.Set;
 public class WishList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int wishListId;
+    private Long wishListId;
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private WLUser owner;
