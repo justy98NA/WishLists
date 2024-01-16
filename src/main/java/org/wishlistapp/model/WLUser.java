@@ -11,8 +11,8 @@ public class WLUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @Column(unique = true)
     private String name;
+    @Column(unique = true)
     private String username;
     @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private Set<WishList> wishLists = new HashSet<>();
