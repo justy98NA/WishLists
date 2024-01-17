@@ -20,11 +20,11 @@ public class GiftService {
     private final AiClient aiClient;
 
     @Autowired
-    public GiftService(GiftRepository giftRepository, GiftMapper giftMapper, WishListRepository wishListRepository) {
+    public GiftService(GiftRepository giftRepository, GiftMapper giftMapper, WishListRepository wishListRepository, AiClient aiClient) {
         this.giftRepository = giftRepository;
         this.giftMapper = giftMapper;
         this.wishListRepository = wishListRepository;
-        this.aiClient = new AiClient();
+        this.aiClient = aiClient;
     }
 
     public List<GiftResponseDTO> getGiftsByWishListId(Long wishListId) {
@@ -40,9 +40,13 @@ public class GiftService {
         // TODO: To set the owner list, we need to get the list from the database, username + title -> wishlist
         var username = giftDTO.getUsername();
         var title = giftDTO.getOwnerListTitle();
+        System.out.println("Username: " + username + ", title: " + title);
         var wl = wishListRepository.findByOwner_UsernameAndTitle(username, title);
         if (wl != null) {
             gift.setOwnerList(wl);
+        } else {
+            System.out.println("Wishlist not found");
+            return null;
         }
         // TODO: Summarise the URL as description
         // TODO: Use the summary or comments if no URL to find a suitable title
@@ -52,5 +56,17 @@ public class GiftService {
 
         giftRepository.save(gift);
         return giftMapper.toDTO(gift);
+    }
+
+    public List<GiftResponseDTO> findAll() {
+        var gifts = giftRepository.findAll();
+        return gifts.stream()
+                .map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                .toList();
+    }
+
+    public GiftResponseDTO getGiftById(Long id) {
+        var gift = giftRepository.findById(id);
+        return gift.map(giftMapper::toDTO).orElse(null);
     }
 }

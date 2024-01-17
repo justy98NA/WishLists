@@ -26,7 +26,7 @@ public class AiClient {
     }
 
     public String getResponse(String prompt) {
-        String instructions = "Find a suitable title for a gift based on the provided comments:\n";
+        String instructions = "Find a suitable title for the product described in provided comments. Keep it short. Use simple words. If it's a book, then book title is enough. If it's vacation somewhere, just 'Vacation in Somewhere'. If it's a piece of clothing, then type and color as title are enough, etc.\n";
         String complete_prompt = instructions + "COMMENTS: " + prompt;
         CompletionRequest completionRequest = CompletionRequest.builder()
                 .prompt(complete_prompt)
@@ -37,7 +37,7 @@ public class AiClient {
         client.createCompletion(completionRequest).getChoices().forEach(choice -> {
             response.append(choice.getText());
         });
-        return response.toString();
+        return response.toString().strip();
     }
 
 }
