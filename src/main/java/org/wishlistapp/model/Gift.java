@@ -85,4 +85,8 @@ public class Gift {
     public void setOwnerList(WishList ownerList) {
         this.ownerList = ownerList;
     }
+
+    public Long getId() {
+        return id;
+    }
 }

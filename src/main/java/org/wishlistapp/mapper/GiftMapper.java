@@ -1,22 +1,22 @@
 package org.wishlistapp.mapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.wishlistapp.DTO.GiftCreateDTO;
 import org.wishlistapp.DTO.GiftResponseDTO;
 import org.wishlistapp.model.Gift;
+import org.wishlistapp.repository.WLUserRepository;
+import org.wishlistapp.repository.WishListRepository;
 
-
+@Component
 public class GiftMapper {
 
-    // need wishlist repository and user repository
     public Gift toEntity(GiftCreateDTO giftDTO) {
         Gift gift = new Gift();
         gift.setUrl(giftDTO.getUrl());
         gift.setImageUrl(giftDTO.getImageUrl());
         gift.setComments(giftDTO.getComments());
-        // TODO: To set the owner list, we need to get the list from the database, username + title -> wishlist
-        // TODO: Summarise the URL as description
-        // TODO: Use the summary or comments if no URL to find a suitable title
-        // TODO: If URL, find price
+
         return gift;
     }
 

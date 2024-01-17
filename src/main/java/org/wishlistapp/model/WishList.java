@@ -44,4 +44,24 @@ public class WishList {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public WLUser getOwner() {
+        return owner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Set<Gift> getGifts() {
+        return gifts;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Long getWishListId() {
+        return wishListId;
+    }
 }

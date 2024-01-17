@@ -28,4 +28,24 @@ public class GiftCreateDTO {
     public String getUsername() {
         return username;
     }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public void setOwnerListTitle(String ownerListTitle) {
+        this.ownerListTitle = ownerListTitle;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

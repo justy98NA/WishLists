@@ -37,4 +37,28 @@ public class GiftResponseDTO {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getComments() {
+        return comments;
+    }
 }
