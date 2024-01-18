@@ -16,7 +16,7 @@ public class GiftMapper {
         gift.setUrl(giftDTO.getUrl());
         gift.setImageUrl(giftDTO.getImageUrl());
         gift.setComments(giftDTO.getComments());
-
+        gift.setPriority(giftDTO.getPriority());
         return gift;
     }
 
@@ -28,6 +28,7 @@ public class GiftMapper {
         giftDTO.setImageUrl(gift.getImageUrl());
         giftDTO.setPrice(gift.getPrice());
         giftDTO.setComments(gift.getComments());
+        giftDTO.setPriority(gift.getPriority());
         return giftDTO;
     }
 }

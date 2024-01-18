@@ -6,6 +6,7 @@ import org.wishlistapp.DTO.GiftResponseDTO;
 import org.wishlistapp.model.Gift;
 import org.wishlistapp.repository.GiftRepository;
 import org.wishlistapp.service.GiftService;
+import retrofit2.http.Path;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,6 @@ public class GiftController {
         this.giftService = giftService;
 
     }
-
 
     @GetMapping("/gifts/{id}")
     public GiftResponseDTO getGiftById(@PathVariable Long id) {
@@ -40,5 +40,18 @@ public class GiftController {
         return giftService.findAll();
     }
 
+    @GetMapping("/gifts/{wishListId}/sorted")
+    public List<GiftResponseDTO> getSortedGiftsByWishListId(@PathVariable Long wishListId) {
+        return giftService.getSortedGiftsByWishListId(wishListId);
+    }
 
+    @DeleteMapping("/gifts/{id}")
+    public GiftResponseDTO deleteGiftById(@PathVariable Long id) {
+        return giftService.deleteById(id);
+    }
+
+    @PutMapping("/gifts/{id}")
+    public GiftResponseDTO updatePriority(@RequestBody GiftCreateDTO giftCreateDTO, @PathVariable Long id) {
+        return giftService.updatePriority(giftCreateDTO, id);
+    }
 }

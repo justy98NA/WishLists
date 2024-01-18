@@ -6,8 +6,10 @@ import org.wishlistapp.DTO.GiftCreateDTO;
 import org.wishlistapp.DTO.GiftResponseDTO;
 import org.wishlistapp.client.AiClient;
 import org.wishlistapp.mapper.GiftMapper;
+import org.wishlistapp.model.Gift;
 import org.wishlistapp.repository.GiftRepository;
 import org.wishlistapp.repository.WishListRepository;
+import org.wishlistapp.sorter.MergeSorter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,13 +20,15 @@ public class GiftService {
     private final GiftMapper giftMapper;
     private final WishListRepository wishListRepository;
     private final AiClient aiClient;
+    private final MergeSorter mergeSorter;
 
     @Autowired
-    public GiftService(GiftRepository giftRepository, GiftMapper giftMapper, WishListRepository wishListRepository, AiClient aiClient) {
+    public GiftService(GiftRepository giftRepository, GiftMapper giftMapper, WishListRepository wishListRepository, AiClient aiClient, MergeSorter mergeSorter) {
         this.giftRepository = giftRepository;
         this.giftMapper = giftMapper;
         this.wishListRepository = wishListRepository;
         this.aiClient = aiClient;
+        this.mergeSorter = mergeSorter;
     }
 
     public List<GiftResponseDTO> getGiftsByWishListId(Long wishListId) {
@@ -37,7 +41,7 @@ public class GiftService {
     public GiftResponseDTO addGift(GiftCreateDTO giftDTO) {
         var gift = giftMapper.toEntity(giftDTO);
 
-        // TODO: To set the owner list, we need to get the list from the database, username + title -> wishlist
+        // To set the owner list, we need to get the list from the database, username + title -> wishlist
         var username = giftDTO.getUsername();
         var title = giftDTO.getOwnerListTitle();
         System.out.println("Username: " + username + ", title: " + title);
@@ -68,5 +72,28 @@ public class GiftService {
     public GiftResponseDTO getGiftById(Long id) {
         var gift = giftRepository.findById(id);
         return gift.map(giftMapper::toDTO).orElse(null);
+    }
+
+    public List<GiftResponseDTO> getSortedGiftsByWishListId(Long wishListId) {
+        var gifts = giftRepository.findByOwnerList_WishListId(wishListId);
+        var sortedGifts = mergeSorter.sort(gifts);
+        return sortedGifts.stream()
+                .map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                .toList();
+    }
+
+    public GiftResponseDTO deleteById(Long id) {
+        var toRemove = this.getGiftById(id);
+        giftRepository.deleteById(id);
+        return toRemove;
+    }
+
+    public GiftResponseDTO updatePriority(GiftCreateDTO giftCreateDto, Long id) {
+        return giftRepository.findById(id)
+                .map(gift -> {
+                    gift.setPriority(giftCreateDto.getPriority());
+                    return giftRepository.save(gift);
+                })
+                .map(giftMapper::toDTO).orElse(null);
     }
 }

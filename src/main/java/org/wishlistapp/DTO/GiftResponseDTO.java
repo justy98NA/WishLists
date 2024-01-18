@@ -14,6 +14,8 @@ public class GiftResponseDTO {
     // User comments on the gift
     private String comments;
 
+    private int priority;
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -60,5 +62,13 @@ public class GiftResponseDTO {
 
     public String getComments() {
         return comments;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

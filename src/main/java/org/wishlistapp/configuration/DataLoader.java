@@ -30,11 +30,13 @@ public class DataLoader {
                 gift1.setOwnerListTitle(wishList1.getTitle());
                 gift1.setComments("I want this book in english, hardcover. Title is 'The Lord of the Rings'. I want the whole set.");
                 gift1.setUsername(user1.getUsername());
+                gift1.setPriority(3);
 
                 GiftCreateDTO gift2 = new GiftCreateDTO();
                 gift2.setOwnerListTitle(wishList1.getTitle());
                 gift2.setComments("I want this blouse in pink. Size Medium.");
                 gift2.setUsername(user1.getUsername());
+                gift2.setPriority(1);
 
 
                 log.info(() -> "Preloading " + giftService.addGift(gift1));

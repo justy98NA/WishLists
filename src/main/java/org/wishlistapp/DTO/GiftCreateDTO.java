@@ -9,6 +9,8 @@ public class GiftCreateDTO {
     private String ownerListTitle;
     private String username;
 
+    private int priority;
+
     public String getUrl() {
         return url;
     }
@@ -47,5 +49,13 @@ public class GiftCreateDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getPriority() {
+        return priority;
     }
 }

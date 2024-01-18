@@ -24,6 +24,8 @@ public class Gift {
     // User comments on the gift
     private String comments;
 
+    private int priority;
+
     public Gift() {
 
     }
@@ -88,5 +90,13 @@ public class Gift {
 
     public Long getId() {
         return id;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }
