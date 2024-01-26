@@ -1,3 +1,5 @@
+# ! AI doesn't work if no network connection
+
 # Sources
 - https://spring.io/guides/tutorials/rest/
 - https://www.youtube.com/watch?v=xHminZ9Dxm4
@@ -28,4 +30,14 @@
 # TO DO:
 - Web crawl the URL, get content, use AI to produce description
 - Then use description to produce title
+- WishList - total price
+- Gift - status - who - what
+  - User chooses a gift - bought - but the owner doesn't see that, others can see
+  - GiftStatus? Id, status (none, ordered, arrived, bought), userid
+- Logging
 
+# STATUS:
+- Is the gift bought, or not
+- Who should see that information
+- WishList share - who can see what
+  - private, public, who to share with

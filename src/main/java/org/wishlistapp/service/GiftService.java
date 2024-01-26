@@ -1,5 +1,6 @@
 package org.wishlistapp.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.wishlistapp.DTO.GiftCreateDTO;
@@ -21,25 +22,27 @@ public class GiftService {
     private final WishListRepository wishListRepository;
     private final AiClient aiClient;
     private final MergeSorter mergeSorter;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public GiftService(GiftRepository giftRepository, GiftMapper giftMapper, WishListRepository wishListRepository, AiClient aiClient, MergeSorter mergeSorter) {
+    public GiftService(GiftRepository giftRepository, GiftMapper giftMapper, WishListRepository wishListRepository, AiClient aiClient, MergeSorter mergeSorter, ModelMapper modelMapper) {
         this.giftRepository = giftRepository;
         this.giftMapper = giftMapper;
         this.wishListRepository = wishListRepository;
         this.aiClient = aiClient;
         this.mergeSorter = mergeSorter;
+        this.modelMapper = modelMapper;
     }
 
     public List<GiftResponseDTO> getGiftsByWishListId(Long wishListId) {
         var gifts = giftRepository.findByOwnerList_WishListId(wishListId);
         return gifts.stream()
-                .map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                .map(gift -> modelMapper.map(gift, GiftResponseDTO.class)) // Use the mapper to convert each Gift to GiftDTO
                 .toList();
     }
 
     public GiftResponseDTO addGift(GiftCreateDTO giftDTO) {
-        var gift = giftMapper.toEntity(giftDTO);
+        var gift = modelMapper.map(giftDTO, Gift.class);
 
         // To set the owner list, we need to get the list from the database, username + title -> wishlist
         var username = giftDTO.getUsername();
@@ -59,26 +62,30 @@ public class GiftService {
         // TODO: If URL, find price
 
         giftRepository.save(gift);
-        return giftMapper.toDTO(gift);
+        //return giftMapper.toDTO(gift);
+        return modelMapper.map(gift, GiftResponseDTO.class);
     }
 
     public List<GiftResponseDTO> findAll() {
         var gifts = giftRepository.findAll();
         return gifts.stream()
-                .map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                //.map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                .map(gift -> modelMapper.map(gift, GiftResponseDTO.class))
                 .toList();
     }
 
     public GiftResponseDTO getGiftById(Long id) {
         var gift = giftRepository.findById(id);
-        return gift.map(giftMapper::toDTO).orElse(null);
+        return modelMapper.map(gift, GiftResponseDTO.class);
+        //return gift.map(giftMapper::toDTO).orElse(null);
     }
 
     public List<GiftResponseDTO> getSortedGiftsByWishListId(Long wishListId) {
         var gifts = giftRepository.findByOwnerList_WishListId(wishListId);
         var sortedGifts = mergeSorter.sort(gifts);
         return sortedGifts.stream()
-                .map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                //.map(giftMapper::toDTO) // Use the mapper to convert each Gift to GiftDTO
+                .map(gift -> modelMapper.map(gift, GiftResponseDTO.class))
                 .toList();
     }
 
@@ -94,6 +101,8 @@ public class GiftService {
                     gift.setPriority(giftCreateDto.getPriority());
                     return giftRepository.save(gift);
                 })
-                .map(giftMapper::toDTO).orElse(null);
+                //.map(giftMapper::toDTO).orElse(null);
+                .map(gift -> modelMapper.map(gift, GiftResponseDTO.class))
+                .orElse(null);
     }
 }

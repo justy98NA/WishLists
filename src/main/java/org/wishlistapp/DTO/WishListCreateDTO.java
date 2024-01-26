@@ -16,4 +16,16 @@ public class WishListCreateDTO {
     public String getTitle() {
         return title;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
