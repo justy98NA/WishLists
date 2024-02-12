@@ -4,6 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.wishlistapp.DTO.WishListCreateDTO;
 import org.wishlistapp.DTO.WishListResponseDTO;
+import org.wishlistapp.exception.EntityNotFoundException;
+import org.wishlistapp.exception.WishListTitleExistsException;
+import org.wishlistapp.model.WLUser;
 import org.wishlistapp.model.WishList;
 import org.wishlistapp.repository.WLUserRepository;
 import org.wishlistapp.repository.WishListRepository;
@@ -23,15 +26,18 @@ public class WishListService {
     }
 
     public WishListResponseDTO addWishList(WishListCreateDTO wishListDTO) {
-        var wishList = modelMapper.map(wishListDTO, WishList.class);
         var owner = wishListDTO.getUsername();
         var user = userRepository.findByUsername(owner);
-        if (user != null) {
-            wishList.setOwner(user);
-        } else {
-            System.out.println("User not found");
-            return null;
+        if (user == null) {
+            throw new EntityNotFoundException(WLUser.class.getName(), owner);
         }
+        var title = wishListDTO.getTitle();
+        var wishListExists = wishListRepository.findByOwner_UsernameAndTitle(owner, title);
+        if (wishListExists != null) {
+            throw new WishListTitleExistsException(title);
+        }
+        var wishList = modelMapper.map(wishListDTO, WishList.class);
+        wishList.setOwner(user);
         wishListRepository.save(wishList);
         return modelMapper.map(wishList, WishListResponseDTO.class);
     }

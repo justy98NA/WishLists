@@ -26,6 +26,7 @@ public class WLUserController {
 
     @PostMapping("/users")
     public WLUserDTO addUser(@RequestBody WLUserDTO wlUserDTO) {
+
         return wlUserService.addUser(wlUserDTO);
     }
 

@@ -26,6 +26,7 @@
 - Change of priority
   - How? Just setPriority() to whatever?
   - Unique? Don't think so?
+  - Maybe a linked List??
 
 # TO DO:
 - Web crawl the URL, get content, use AI to produce description
@@ -36,7 +37,7 @@
   - GiftStatus? Id, status (none, ordered, arrived, bought), userid
 - Logging
 
-# STATUS:
+# STATUS FEATURE:
 - Is the gift bought, or not
 - Who should see that information
 - WishList share - who can see what
