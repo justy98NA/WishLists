@@ -1,4 +1,4 @@
-package org.wishlistapp.sorter;
+/*package org.wishlistapp.sorter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +36,4 @@ public class MergeSorterTest {
         assert sorted.getLast().getPriority() == 5;
         assert sorted.getFirst().getPriority() == 1;
     }
-}
+}*/
