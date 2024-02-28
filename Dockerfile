@@ -11,6 +11,6 @@ FROM eclipse-temurin:21-jre
 
 COPY --from=build /app/target/wishlist-api.jar /app/wishlist-api.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT ["java", "-jar", "/app/wishlist-api.jar"]

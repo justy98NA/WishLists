@@ -14,6 +14,11 @@ import org.wishlistapp.repository.GiftRepository;
 import org.wishlistapp.repository.WishListRepository;
 import org.wishlistapp.sorter.MergeSorter;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,11 +64,15 @@ public class GiftService {
 
         // TODO: Summarise the URL as description
         // TODO: Use the summary or comments if no URL to find a suitable title
-        var aiTitle = aiClient.getResponse(giftDTO.getComments());
 
+        try {
+            gift.setTitle(getTitleFromAssistant(giftDTO.getUrl()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // potentially check if the title in the owner list exists
 
-        gift.setTitle(aiTitle);
+        //gift.setTitle(aiTitle);
         gift.setOwnerList(wishlist);
         // TODO: If URL, find price
 
@@ -73,6 +82,34 @@ public class GiftService {
         return modelMapper.map(gift, GiftResponseDTO.class);
     }
 
+    private String getTitleFromAssistant(String url) throws Exception {
+        URL source = new URL("http://localhost:8082/title");
+        HttpURLConnection con = (HttpURLConnection) source.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+        con.setRequestProperty("Accept", "text/plain");
+
+        con.setDoOutput(true);
+
+        try (OutputStream os = con.getOutputStream()) {
+            byte[] input = url.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(con.getInputStream(), "utf-8"))) {
+
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+
+        }
+        con.disconnect();
+        return response.toString();
+    }
     public List<GiftResponseDTO> findAll() {
         var gifts = giftRepository.findAll();
         return gifts.stream()
